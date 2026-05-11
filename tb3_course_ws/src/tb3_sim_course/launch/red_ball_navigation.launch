@@ -1,0 +1,123 @@
+<launch>
+  <arg name="model" default="waffle_pi"/>
+  <arg name="map_file" default="$(find tb3_sim_course)/maps/turtlebot3_map.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="open_viewers" default="true"/>
+  <arg name="monitor" default="true"/>
+  <arg name="move_ball" default="true"/>
+  <arg name="ball_speed" default="0.07"/>
+  <arg name="log_rate" default="5.0"/>
+  <arg name="log_dir" default="$(env HOME)/final_work/tb3_course_ws/logs"/>
+  <arg name="ball_x" default="-1.35"/>
+  <arg name="ball_y" default="-0.55"/>
+  <arg name="ball_z" default="0.18"/>
+  <arg name="initial_pose_x" default="-2.0"/>
+  <arg name="initial_pose_y" default="-0.55"/>
+  <arg name="initial_pose_yaw" default="0.0"/>
+  <arg name="auto_initial_pose" default="true"/>
+
+  <env name="TURTLEBOT3_MODEL" value="$(arg model)"/>
+  <env name="GAZEBO_IP" value="127.0.0.1"/>
+  <env name="GAZEBO_MODEL_PATH" value="$(find tb3_sim_course)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch">
+    <arg name="model" value="$(arg model)"/>
+  </include>
+
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)"/>
+  </include>
+
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <include file="$(find turtlebot3_navigation)/launch/amcl.launch"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap"/>
+    <param name="global_costmap/inflation_radius" value="0.45"/>
+    <param name="local_costmap/inflation_radius" value="0.45"/>
+    <param name="global_costmap/cost_scaling_factor" value="5.0"/>
+    <param name="local_costmap/cost_scaling_factor" value="5.0"/>
+    <rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load"/>
+    <rosparam file="$(find tb3_sim_course)/config/dwa_red_ball_local_planner.yaml" command="load"/>
+    <param name="controller_frequency" value="10.0"/>
+    <param name="planner_frequency" value="2.0"/>
+    <remap from="cmd_vel" to="/cmd_vel"/>
+    <remap from="odom" to="odom"/>
+    <param name="DWAPlannerROS/min_vel_x" value="0.0"/>
+  </node>
+
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz"/>
+  </group>
+
+  <group if="$(arg auto_initial_pose)">
+    <node pkg="tb3_sim_course" type="initial_pose_pub.py" name="initial_pose_pub" output="screen">
+      <param name="x" value="$(arg initial_pose_x)"/>
+      <param name="y" value="$(arg initial_pose_y)"/>
+      <param name="yaw" value="$(arg initial_pose_yaw)"/>
+    </node>
+  </group>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_red_ball" output="screen"
+        args="-sdf -file $(find tb3_sim_course)/models/red_ball/model.sdf -model red_ball -x $(arg ball_x) -y $(arg ball_y) -z $(arg ball_z)"/>
+
+  <group if="$(arg move_ball)">
+    <node pkg="tb3_sim_course" type="move_red_ball.py" name="move_red_ball" output="screen">
+      <rosparam param="waypoints">
+        [[-1.35, -0.55], [-0.55, -0.55], [0.55, -0.55], [1.65, -0.55],
+         [1.65, 0.50], [0.55, 0.50], [-0.55, 0.50], [-1.65, 0.50],
+         [-1.65, -0.55], [-1.35, -0.55]]
+      </rosparam>
+      <param name="mode" value="leader"/>
+      <param name="speed" value="$(arg ball_speed)"/>
+      <param name="start_delay" value="4.0"/>
+      <param name="min_speed" value="0.00"/>
+      <param name="slow_gap" value="0.70"/>
+      <param name="max_gap" value="0.92"/>
+      <param name="stop_gap" value="1.00"/>
+      <param name="resume_gap" value="0.82"/>
+      <param name="start_gap" value="0.72"/>
+      <param name="rate" value="120.0"/>
+    </node>
+  </group>
+
+  <node pkg="tb3_sim_course" type="red_ball_tracker.py" name="red_ball_detector" output="screen">
+    <rosparam command="load" file="$(find tb3_sim_course)/config/red_ball_tracker.yaml"/>
+    <param name="detect_only" value="true"/>
+    <param name="target_base_topic" value="/red_ball/target_base"/>
+    <param name="target_image_topic" value="/red_ball/target_image"/>
+    <param name="ball_radius_m" value="0.12"/>
+    <param name="camera_horizontal_fov" value="1.3962634"/>
+  </node>
+
+  <node pkg="tb3_sim_course" type="red_ball_nav_follower.py" name="red_ball_nav_follower" output="screen">
+    <rosparam command="load" file="$(find tb3_sim_course)/config/red_ball_nav_follower.yaml"/>
+  </node>
+
+  <group if="$(arg monitor)">
+    <node pkg="tb3_sim_course" type="monitor_red_ball_nav.py" name="monitor_red_ball_nav" output="screen">
+      <param name="rate" value="$(arg log_rate)"/>
+      <param name="log_dir" value="$(arg log_dir)"/>
+      <param name="robot_model_name" value="turtlebot3_waffle_pi"/>
+      <param name="ball_model_name" value="red_ball"/>
+    </node>
+  </group>
+
+  <group if="$(arg open_viewers)">
+    <node pkg="image_view" type="image_view" name="red_ball_raw_view" output="screen">
+      <remap from="image" to="/camera/rgb/image_raw"/>
+    </node>
+    <node pkg="image_view" type="image_view" name="red_ball_mask_view" output="screen">
+      <remap from="image" to="/red_ball/hsv_mask"/>
+    </node>
+    <node pkg="image_view" type="image_view" name="red_ball_debug_view" output="screen">
+      <remap from="image" to="/red_ball/debug_image"/>
+    </node>
+  </group>
+</launch>

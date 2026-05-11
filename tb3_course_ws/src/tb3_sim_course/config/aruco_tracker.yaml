@@ -1,0 +1,29 @@
+image_topic: "/camera/rgb/image_raw"
+cmd_vel_topic: "/cmd_vel"
+debug_image_topic: "/aruco/debug_image"
+gray_image_topic: "/aruco/gray_image"
+threshold_image_topic: "/aruco/threshold_image"
+pose_topic: "/aruco/pose"
+status_topic: "/aruco/status"
+
+aruco_dict: "DICT_4X4_50"
+target_id: 0
+marker_size: 0.15
+
+control_enabled: true
+desired_distance: 0.6
+linear_kp: 0.45
+angular_kp: 0.005
+max_linear: 0.18
+max_angular: 0.8
+distance_tolerance: 0.06
+center_tolerance_px: 16
+
+lost_timeout: 0.6
+stop_on_lost: false
+search_angular: 0.35
+publish_rate: 10.0
+debug_image: true
+publish_pipeline_images: true
+threshold_block_size: 31
+threshold_c: 7

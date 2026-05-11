@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>tb3_sim_course</name>
+  <version>0.1.0</version>
+  <description>TurtleBot3 Noetic simulation course package with SLAM, navigation, ArUco tracking, and patrol demos.</description>
+
+  <maintainer email="zyz@example.com">zyz</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>map_server</exec_depend>
+  <exec_depend>move_base_msgs</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>turtlebot3_gazebo</exec_depend>
+  <exec_depend>turtlebot3_navigation</exec_depend>
+  <exec_depend>turtlebot3_slam</exec_depend>
+  <exec_depend>turtlebot3_teleop</exec_depend>
+
+  <export/>
+</package>

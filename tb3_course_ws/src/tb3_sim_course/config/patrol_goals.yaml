@@ -1,0 +1,7 @@
+frame_id: "map"
+goal_timeout: 90.0
+goals:
+  - {x: 0.6, y: 0.0, yaw: 0.0}
+  - {x: 0.6, y: 0.6, yaw: 1.57}
+  - {x: 0.0, y: 0.6, yaw: 3.14}
+  - {x: 0.0, y: 0.0, yaw: -1.57}

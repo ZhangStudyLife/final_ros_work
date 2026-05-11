@@ -1,0 +1,37 @@
+# Catkin/ROS build outputs
+tb3_course_ws/build/
+tb3_course_ws/devel/
+tb3_course_ws/install/
+tb3_course_ws/.catkin_workspace
+
+# Runtime logs and generated diagnostics
+tb3_course_ws/logs/
+tb3_course_ws/*.log
+*.log
+
+# Python cache/test artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ROS/Gazebo transient files
+.ros/
+.gazebo/server-*.log
+.gazebo/client-*.log
+*.bag
+*.bag.active
+
+# Editor and OS noise
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Keep source, launch, config, maps, models, and docs under tb3_course_ws/src.

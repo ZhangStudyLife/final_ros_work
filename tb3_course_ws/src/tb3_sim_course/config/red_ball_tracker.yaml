@@ -1,0 +1,45 @@
+image_topic: "/camera/rgb/image_raw"
+scan_topic: "/scan"
+cmd_vel_topic: "/cmd_vel"
+debug_image_topic: "/red_ball/debug_image"
+hsv_mask_topic: "/red_ball/hsv_mask"
+status_topic: "/red_ball/status"
+
+lower_red_1: [0, 90, 70]
+upper_red_1: [12, 255, 255]
+lower_red_2: [168, 90, 70]
+upper_red_2: [180, 255, 255]
+
+min_area: 120
+min_radius_px: 5.0
+max_radius_px: 220.0
+min_circularity: 0.45
+min_fill_ratio: 0.42
+desired_radius_px: 46.0
+radius_tolerance_px: 5.0
+center_tolerance_px: 10.0
+linear_kp: 0.015
+linear_ki: 0.001
+linear_kd: 0.0035
+angular_kp: 0.010
+angular_ki: 0.0002
+angular_kd: 0.0035
+integral_limit: 90.0
+derivative_filter: 0.35
+max_linear: 0.48
+max_angular: 1.90
+allow_reverse: false
+search_angular: 0.95
+lost_timeout: 0.25
+predict_timeout: 2.2
+lost_linear_scale: 0.55
+lost_angular_scale: 0.85
+min_lost_linear: 0.06
+front_stop_distance: 0.32
+ball_radius_m: 0.12
+camera_horizontal_fov: 1.3962634
+min_estimated_distance: 0.28
+max_estimated_distance: 1.80
+target_smoothing_alpha: 0.42
+max_target_jump_m: 0.75
+publish_rate: 30.0

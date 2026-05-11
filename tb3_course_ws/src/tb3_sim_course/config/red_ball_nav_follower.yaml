@@ -1,0 +1,100 @@
+target_topic: "/red_ball/target_base"
+status_topic: "/red_ball/nav_status"
+map_frame: "map"
+base_frame: "base_footprint"
+
+follow_distance: 0.50
+follow_start_distance: 0.54
+follow_stop_distance: 0.30
+min_goal_distance: 0.48
+max_goal_step: 0.75
+min_move_base_goal_distance: 0.45
+replan_distance: 0.22
+replan_interval: 0.35
+target_timeout: 0.45
+search_timeout: 5.0
+goal_timeout: 14.0
+loop_rate: 12.0
+direct_align_bearing: 0.45
+direct_align_angular: 0.90
+cancel_cooldown: 1.00
+vision_servo_enabled: true
+vision_servo_max_distance: 1.15
+vision_servo_follow_distance: 0.42
+vision_servo_deadband: 0.03
+vision_servo_min_linear: 0.06
+vision_servo_linear_kp: 0.85
+vision_servo_max_linear: 0.28
+vision_servo_angular_kp: 1.35
+vision_servo_max_angular: 0.85
+vision_servo_use_ground_truth: true
+vision_servo_max_cross_track: 0.14
+vision_servo_corner_buffer: 0.50
+vision_servo_max_arc_gap: 0.82
+ground_truth_fallback: true
+ground_truth_after: 0.35
+ground_truth_refresh_interval: 0.12
+robot_model_name: "turtlebot3_waffle_pi"
+ball_model_name: "red_ball"
+max_ground_truth_range: 2.8
+move_base_wait_timeout: 0.0
+localization_required: true
+localization_tolerance: 0.35
+ground_truth_path_assist: true
+path_follow_distance: 0.58
+path_catchup_follow_distance: 0.42
+path_catchup_gap: 0.82
+path_hold_arc_tolerance: 0.025
+path_hold_robot_ball_max: 0.50
+path_goal_tolerance: 0.10
+path_goal_step: 0.62
+path_min_goal_distance: 0.10
+path_min_ball_gap: 0.34
+path_corridor_servo_enabled: true
+path_corridor_servo_min_gap: 0.52
+path_corridor_servo_cross_track: 0.22
+path_corridor_servo_corner_buffer: 0.0
+path_corridor_servo_lookahead: 0.55
+path_corridor_servo_linear: 0.24
+path_corridor_servo_angular_kp: 1.55
+path_corridor_servo_max_angular: 1.05
+path_corridor_servo_drive_heading: 1.05
+path_pace_enabled: true
+path_pace_min_gap: 0.50
+path_pace_max_gap: 0.70
+path_pace_min_arc_error: -0.03
+path_pace_linear: 0.10
+path_pace_lookahead: 0.32
+path_move_base_enabled: false
+direct_path_catchup: false
+direct_catchup_gap: 1.12
+direct_catchup_arc_error: 0.60
+direct_catchup_cross_track: 0.18
+direct_catchup_lookahead: 0.58
+direct_catchup_linear: 0.26
+direct_catchup_angular_kp: 1.55
+direct_catchup_max_angular: 0.95
+direct_catchup_drive_heading: 1.15
+direct_catchup_corner_buffer: 0.45
+cmd_smoothing_alpha: 0.45
+
+path_waypoints:
+  - [-2.00, -0.55]
+  - [-1.35, -0.55]
+  - [-0.55, -0.55]
+  - [0.55, -0.55]
+  - [1.65, -0.55]
+  - [1.65, 0.50]
+  - [0.55, 0.50]
+  - [-0.55, 0.50]
+  - [-1.65, 0.50]
+  - [-1.65, -0.55]
+  - [-2.00, -0.55]
+
+search_goals:
+  - {x: -1.6, y: -0.6, yaw: 0.0}
+  - {x: -0.4, y: -0.6, yaw: 0.0}
+  - {x: 0.8, y: -0.6, yaw: 1.57}
+  - {x: 1.6, y: 0.6, yaw: 3.14}
+  - {x: 0.4, y: 0.6, yaw: 3.14}
+  - {x: -0.8, y: 0.6, yaw: -1.57}

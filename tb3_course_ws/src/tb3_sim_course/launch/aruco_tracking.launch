@@ -1,0 +1,23 @@
+<launch>
+  <arg name="model" default="waffle_pi"/>
+  <arg name="marker_x" default="1.4"/>
+  <arg name="marker_y" default="0.0"/>
+  <arg name="marker_z" default="0.35"/>
+  <arg name="marker_yaw" default="3.14159"/>
+  <arg name="open_gazebo" default="true"/>
+
+  <env name="TURTLEBOT3_MODEL" value="$(arg model)"/>
+  <env name="GAZEBO_IP" value="127.0.0.1"/>
+  <env name="GAZEBO_MODEL_PATH" value="$(find tb3_sim_course)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+  <group if="$(arg open_gazebo)">
+    <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
+  </group>
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_aruco_marker_0" output="screen"
+        args="-sdf -file $(find tb3_sim_course)/models/aruco_marker_0/model.sdf -model aruco_marker_0 -x $(arg marker_x) -y $(arg marker_y) -z $(arg marker_z) -Y $(arg marker_yaw)"/>
+
+  <node pkg="tb3_sim_course" type="aruco_tracker.py" name="aruco_tracker" output="screen">
+    <rosparam command="load" file="$(find tb3_sim_course)/config/aruco_tracker.yaml"/>
+  </node>
+</launch>
